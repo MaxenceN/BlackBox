@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <SDL.h>
+#include "laser.h"
+
+void chargementSDL()
+{
+    //Initialisation de la bibliothèque graphique SDL, et gestion des erreurs d'initialisation
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
+    {
+        fprintf(stderr, "Erreur d'initialisation de la SDL");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void affichagePlateau()
+{
+    //Création de l'écran et gestion des erreurs
+    SDL_Surface *ecran = NULL; //L'écran est un pointeur afin de gérer la redimension de l'écran
+    ecran = SDL_SetVideoMode(1000, 550, 32, SDL_HWSURFACE | SDL_RESIZABLE | SDL_DOUBLEBUF);
+    if (ecran == NULL)
+    {
+        fprintf(stderr, "Impossible de charger le mode vidéo : %s\n", SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
+
+    //Titre de la fenêtre
+    SDL_WM_SetCaption("Black Box", NULL);
+
+    //Charge l'image du plateau et la place à la position (0;0)
+    SDL_Surface *plateau = NULL;
+    SDL_Rect positionPlateau;
+    positionPlateau.x = 0;
+    positionPlateau.y = 0;
+    plateau = SDL_LoadBMP("plateau.bmp");
+    SDL_BlitSurface(plateau, NULL, ecran , &positionPlateau);
+
+    //Colle le plateau sur l'écran
+    SDL_Flip(ecran);
+}
+
+
+int main(int argc, char **argv)
+{
+    chargementSDL();
+    initialiserPlateau(8);
+    /*printf("%d",plateau[0][0]);
+    printf("%d",plateau[1][0]);
+    printf("%d",plateau[1][1]);*/
+    /*affichagePlateau();
+
+    int continuer = 1 ;
+    SDL_Event event; // Variable gérant les évênements
+    SDL_Rect positionSouris; //Variable contenant les positions x et y de la souris lors d'un clic
+
+    //Boucle principale du jeu
+    while (continuer)
+    {
+        SDL_WaitEvent(&event);
+
+        //Evenement de type "fermeture du programme"
+        if(event.type == SDL_QUIT )
+        {
+            continuer = 0;
+        }
+
+        //Clic de la souris
+        else if(event.type == SDL_MOUSEBUTTONUP)
+        {
+            //Recupération de la position du clic,et calcul de la correspondance avec le tableau Plateau
+            // 137 et 7 correspond a l'éloignement du plateau par rapport au bord de la fenetre
+            //52 et 53 sont les tailles des cotés de chaque cases
+            positionSouris.x = ((event.button.x-137)/53);
+            positionSouris.y = ((event.button.y-7)/52);
+
+            //Si on clique sur une case vide du plateau, on place un atome dessus
+            if (plateau[positionSouris.x][positionSouris.y] == 0)
+            {
+                //Charge l'image de l'atome et la place à la position
+                SDL_Surface *atome = NULL;
+                SDL_Rect positionAtome;
+                positionAtome.x = 137 + 53*positionSouris.x;
+                positionAtome.y = 7 + 52*positionSouris.y;
+                atome = SDL_LoadBMP("Essai.bmp");
+                SDL_BlitSurface(atome, NULL, ecran , &positionAtome);
+            }
+
+        }
+    }*/
+
+
+    SDL_Quit();
+
+    return EXIT_SUCCESS;
+}
